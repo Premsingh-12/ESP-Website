@@ -10,14 +10,15 @@ DEBUG = True
 SHOW_TEMPLATE_ERRORS = DEBUG
 CACHE_DEBUG = False
 
-# Database — connects to the 'db' Docker Compose service
+# Database — uses Railway environment variables when available,
+# falling back to Docker Compose defaults for local development.
 DATABASES = {'default':
-                {'NAME': 'devsite_django',
-                 'HOST': 'db',
-                 'PORT': '5432',
+                {'NAME': os.environ.get('PGDATABASE', 'devsite_django'),
+                 'HOST': os.environ.get('PGHOST', 'db'),
+                 'PORT': os.environ.get('PGPORT', '5432'),
                  'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                 'USER': 'esp',
-                 'PASSWORD': 'password',
+                 'USER': os.environ.get('PGUSER', 'esp'),
+                 'PASSWORD': os.environ.get('PGPASSWORD', 'password'),
                 }
             }
 
